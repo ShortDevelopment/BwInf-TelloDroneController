@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -35,7 +36,7 @@ namespace TelloDroneControl
 
         public void SendCmd(string cmd)
         {
-            Console.WriteLine($"[{DateTime.Now}] Executing: {cmd}");
+            Debug.Print($"[{DateTime.Now}] Executing: {cmd}");
             byte[] data = Encoding.ASCII.GetBytes(cmd);
             lock(Connection)
                 Connection.Send(data, data.Length);

@@ -8,7 +8,20 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-
-    </Grid>
+    <StackPanel>
+        <CommandBar DefaultLabelPosition="Right" HorizontalAlignment="Center" Margin="10" Background="{ThemeResource AppBarBackgroundThemeBrush}">
+            <AppBarButton Label="Takeoff" Click="TakeoffAppBarButton_Click">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xe752;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton Label="Land" Click="LandAppBarButton_Click">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xe896;" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </CommandBar>
+        <TextBlock x:Name="ValueTextBlock" Text="Test" />
+        <TextBlock x:Name="StatusTextBlock" Text="Test" />
+    </StackPanel>
 </Page>

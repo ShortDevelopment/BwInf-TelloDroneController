@@ -43,26 +43,23 @@ namespace TelloDroneController.Uwp
                     {
                         var reading = pad.GetCurrentReading();
                         ValueTextBlock.Text = reading.LeftThumbstickX.ToString();
-                        
-                        //if (reading.RightTrigger > 0)
-                        //    Controller.SendCmd($"up {(int)Math.Round(40 * reading.RightTrigger)}");
-                        //else if (reading.LeftTrigger < 0)
-                        //    Controller.SendCmd($"down {(int)Math.Round(40 * reading.LeftTrigger)}");
 
-                        //if (reading.RightThumbstickX > 0.1)
-                        //    Controller.SendCmd($"right {(int)Math.Round(10 * Math.Abs(reading.RightThumbstickX))}");
-                        //else if (reading.RightThumbstickX < -0.1)
-                        //    Controller.SendCmd($"left {(int)Math.Round(10 * Math.Abs(reading.RightThumbstickX))}");
+                        //int throttle = (int)Math.Round(maxValue * reading.RightTrigger);
+                        //if (reading.LeftTrigger > 0)
+                        //    throttle = (int)Math.Round(maxValue * reading.LeftTrigger);
 
                         int sideways = (int)Math.Round(maxValue * reading.LeftThumbstickX);
                         int forewards = (int)Math.Round(maxValue * reading.LeftThumbstickY);
                         int rotate = (int)Math.Round(90 * reading.RightThumbstickX);
-                        Controller.SendCmd($"rc {sideways} {forewards} 0 {rotate}");
+                        int throttle = (int)Math.Round(maxValue * reading.RightThumbstickY);
+                        Controller.SendCmd($"rc {sideways} {forewards} {throttle} {rotate}");
 
                         if (reading.Buttons.HasFlag(GamepadButtons.Y))
                             Controller.SendCmd("takeoff");
                         if (reading.Buttons.HasFlag(GamepadButtons.B))
                             Controller.SendCmd("stop");
+                        if (reading.Buttons.HasFlag(GamepadButtons.X))
+                            Controller.SendCmd("flip l");
                         if (reading.Buttons.HasFlag(GamepadButtons.A))
                             Controller.SendCmd("land");
                     });

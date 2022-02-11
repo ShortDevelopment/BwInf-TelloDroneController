@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -22,7 +23,7 @@ namespace TelloDroneControl
             if (IsInitialized)
                 throw new InvalidOperationException("Already initialized!");
 
-            Connection = new(LocalCommandResponsePort);
+            Connection = new UdpClient(LocalCommandResponsePort);
             Connection.Connect(TelloIp, TelloPort);
             Connection.BeginReceive(ReceivedResponse, null);
 
@@ -35,7 +36,7 @@ namespace TelloDroneControl
 
         public void SendCmd(string cmd)
         {
-            Console.WriteLine($"[{DateTime.Now}] Executing: {cmd}");
+            Debug.Print($"[{DateTime.Now}] Executing: {cmd}");
             byte[] data = Encoding.ASCII.GetBytes(cmd);
             lock(Connection)
                 Connection.Send(data, data.Length);
@@ -46,7 +47,7 @@ namespace TelloDroneControl
 
         void ReceivedResponse(IAsyncResult result)
         {
-            IPEndPoint endpoint = new(IPAddress.Any, LocalCommandResponsePort);
+            IPEndPoint endpoint = new IPEndPoint(IPAddress.Any, LocalCommandResponsePort);
             byte[] data = Connection.EndReceive(result, ref endpoint);
             string response = Encoding.ASCII.GetString(data);
 

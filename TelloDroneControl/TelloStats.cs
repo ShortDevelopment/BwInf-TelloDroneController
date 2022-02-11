@@ -26,7 +26,7 @@ namespace TelloDroneControl
 
         public static TelloStats Parse(string data)
         {
-            TelloStats stats = new();
+            TelloStats stats = new TelloStats();
             foreach (string chunk in data.Split(';'))
             {
                 string[] chunkData = chunk.Split(':');
@@ -34,7 +34,7 @@ namespace TelloDroneControl
                 {
                     string name = chunkData[0];
                     string valueStr = chunkData[1];
-                    PropertyInfo? prop = typeof(TelloStats).GetProperty(name);
+                    PropertyInfo prop = typeof(TelloStats).GetProperty(name);
                     if (prop != null)
                         prop.SetValue(stats, decimal.Parse(valueStr, CultureInfo.InvariantCulture));
                 }

@@ -20,23 +20,41 @@ namespace TelloDroneControl
             Controller.StatsReceived += Controller_StatsReceived;
 
             Controller.SendCmd("battery?");
-            Controller.SendCmd("takeoff");
+
 
             while (true)
             {
                 var key = Console.ReadKey().Key;
-                int horizontal = 0;
-                int horizontal2 = 0;
-                if (key == ConsoleKey.A)
-                    horizontal = -movement;
-                if (key == ConsoleKey.D)
-                    horizontal = movement;
 
-                if (key == ConsoleKey.W)
-                    horizontal2 = movement;
-                if (key == ConsoleKey.S)
-                    horizontal2 = -movement;
-                Controller.SendCmd($"rc {horizontal} {horizontal2} 0 0");
+                if (key == ConsoleKey.T)
+                    Controller.SendCmd("takeoff");
+                else if (key == ConsoleKey.L)
+                    Controller.SendCmd("land");
+                else if (key == ConsoleKey.Escape)
+                    Controller.SendCmd("emergency");
+                else
+                {
+                    int horizontal = 0;
+                    if (key == ConsoleKey.A)
+                        horizontal = -movement;
+                    if (key == ConsoleKey.D)
+                        horizontal = movement;
+
+                    int horizontal2 = 0;
+                    if (key == ConsoleKey.W)
+                        horizontal2 = movement;
+                    if (key == ConsoleKey.S)
+                        horizontal2 = -movement;
+
+                    int rotate = 0;
+                    if (key == ConsoleKey.LeftArrow)
+                        rotate = movement;
+                    if (key == ConsoleKey.RightArrow)
+                        rotate = -movement;
+
+                    Controller.SendCmd($"rc {horizontal} {horizontal2} 0 {rotate}");
+                }
+
                 //string cmd = Console.ReadLine();
                 //if (cmd == "exit")
                 //    return;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace TelloDroneControl
@@ -10,7 +9,7 @@ namespace TelloDroneControl
         static void Main(string[] args)
             => MainAsync(args).GetAwaiter().GetResult();
 
-        const int movement = 25;
+        const int movement = 10;
 
         static async Task MainAsync(string[] args)
         {
@@ -21,6 +20,10 @@ namespace TelloDroneControl
 
             Controller.SendCmd("battery?");
 
+            int horizontal = 0;
+            int horizontal2 = 0;
+            int vertical = 0;
+            int rotate = 0;
 
             while (true)
             {
@@ -30,29 +33,39 @@ namespace TelloDroneControl
                     Controller.SendCmd("takeoff");
                 else if (key == ConsoleKey.L)
                     Controller.SendCmd("land");
+                else if (key == ConsoleKey.Spacebar)
+                {
+                    horizontal = 0;
+                    horizontal2 = 0;
+                    vertical = 0;
+                    rotate = 0;
+                    Controller.SendCmd("stop");
+                }
                 else if (key == ConsoleKey.Escape)
                     Controller.SendCmd("emergency");
                 else
                 {
-                    int horizontal = 0;
                     if (key == ConsoleKey.A)
-                        horizontal = -movement;
+                        horizontal -= movement;
                     if (key == ConsoleKey.D)
-                        horizontal = movement;
+                        horizontal += movement;
 
-                    int horizontal2 = 0;
                     if (key == ConsoleKey.W)
-                        horizontal2 = movement;
+                        horizontal2 += movement;
                     if (key == ConsoleKey.S)
-                        horizontal2 = -movement;
+                        horizontal2 -= movement;
 
-                    int rotate = 0;
+                    if (key == ConsoleKey.UpArrow)
+                        vertical += movement;
+                    if (key == ConsoleKey.DownArrow)
+                        vertical -= movement;
+
                     if (key == ConsoleKey.LeftArrow)
-                        rotate = movement;
+                        rotate += movement;
                     if (key == ConsoleKey.RightArrow)
-                        rotate = -movement;
+                        rotate -= movement;
 
-                    Controller.SendCmd($"rc {horizontal} {horizontal2} 0 {rotate}");
+                    Controller.SendCmd($"rc {horizontal} {horizontal2} {vertical} {rotate}");
                 }
 
                 //string cmd = Console.ReadLine();

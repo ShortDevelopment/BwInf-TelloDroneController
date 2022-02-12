@@ -20,12 +20,9 @@ namespace TelloDroneController.Uwp
         }
 
         private async void Controller_ResponseReceived(string response)
-        {
-            await Dispatcher.RunIdleAsync((x) => StatusTextBlock.Text = response);
-        }
+            => await Dispatcher.RunIdleAsync((x) => StatusTextBlock.Text = response);
 
         const int maxValue = 100;
-
         private async void Gamepad_GamepadAdded(object sender, Gamepad pad)
         {
             await Task.Run(async () =>
@@ -59,7 +56,7 @@ namespace TelloDroneController.Uwp
                         if (reading.Buttons.HasFlag(GamepadButtons.B))
                             Controller.SendCmd("stop");
                         if (reading.Buttons.HasFlag(GamepadButtons.X))
-                            Controller.SendCmd("flip l");
+                            Controller.SendCmd("flip f");
                         if (reading.Buttons.HasFlag(GamepadButtons.A))
                             Controller.SendCmd("land");
                     });
@@ -71,9 +68,7 @@ namespace TelloDroneController.Uwp
         private void TakeoffAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
             => Controller.SendCmd("takeoff");
 
-
         private void LandAppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
             => Controller.SendCmd("land");
-
     }
 }
